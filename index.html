@@ -149,11 +149,11 @@
                 "Q6": document.getElementById("q6").value.trim()
             };
 
-            fetch("YOUR_API_URL_HERE", {
-                method: "POST",  // Change this to GET, PUT, DELETE as needed
+            fetch("https://api.botghost.com/webhook/1338030060300402688/e3gti17gvfjpej1s7vau", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "YOUR_AUTHORIZATION_HERE"
+                    "Authorization": "5ecb576597790e7a7e0c9934e819cacc1565e0bfef65479b45432c0548d318c2"
                 },
                 body: JSON.stringify(data)
             }).then(response => response.json())
