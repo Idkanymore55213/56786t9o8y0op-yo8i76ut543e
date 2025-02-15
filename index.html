@@ -160,7 +160,7 @@
                 body: JSON.stringify(data)
             }).then(response => response.json())
               .then(result => alert("Form submitted successfully!, make sure you have dms enabled so the bot can dm you if accepted!"))
-              .catch(error => alert("Error submitting form."));
+              .catch(error => alert("Error submitting form. Returned code" + error.message));
         });
     </script>
 
