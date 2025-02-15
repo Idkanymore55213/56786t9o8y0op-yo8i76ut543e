@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api Games Support Application</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 600px; 
+            margin: auto; 
+            background-color: #2e004f; 
+            color: white; 
+        }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            font-weight: bold; 
+        }
+        input, select, textarea { 
+            width: 100%; 
+            padding: 8px; 
+            margin-top: 5px; 
+            background-color: #4a0075; 
+            color: white; 
+            border: 1px solid #a855f7; 
+        }
+        input::placeholder, textarea::placeholder {
+            color: #d1b3ff;
+        }
+        .error { 
+            color: red; 
+            display: none; 
+        }
+        button { 
+            background-color: green; 
+            color: white; 
+            padding: 10px; 
+            border: none; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            width: 100%; 
+        }
+        button:disabled { 
+            background-color: gray; 
+            cursor: not-allowed; 
+        }
+        /* Align checkboxes properly */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Api Games Support Application</h2>
+
+    <label for="q1">What is your discord ID? *</label>
+    <input type="text" id="q1" required>
+    <span class="error" id="q1-error">This field is required.</span>
+
+    <label>Are you in the support discord? *</label>
+    <select id="q2" required>
+        <option value="">Select an option</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+    <span class="error" id="q2-error">This field is required.</span>
+
+    <label>What is an "Array"? *</label>
+    <select id="q3" required>
+        <option value="">Select an option</option>
+        <option value="A">A variable used to store a text</option>
+        <option value="B">A variable used to store a number</option>
+        <option value="C">A variable used to store a key and a value</option>
+        <option value="D">A variable used to store multiple values</option>
+    </select>
+    <span class="error" id="q3-error">This field is required.</span>
+
+    <label>What fields does a "GET" method have? (Select all that apply) *</label>
+    <div class="checkbox-group"><input type="checkbox" id="q4a" value="URL Params"><label for="q4a">URL Params</label></div>
+    <div class="checkbox-group"><input type="checkbox" id="q4b" value="HTTP Headers"><label for="q4b">HTTP Headers</label></div>
+    <div class="checkbox-group"><input type="checkbox" id="q4c" value="Request Body"><label for="q4c">Request Body</label></div>
+    <span class="error" id="q4-error">At least one option must be selected.</span>
+
+    <label>What does API Games do? *</label>
+    <select id="q5" required>
+        <option value="">Select an option</option>
+        <option value="A">Help make discord bots</option>
+        <option value="B">Help make games</option>
+        <option value="C">Help keep track of players</option>
+        <option value="D">Any of the above</option>
+    </select>
+    <span class="error" id="q5-error">This field is required.</span>
+
+    <label for="q6">How would I run the "Create player" request? *</label>
+    <textarea id="q6" required></textarea>
+    <span class="error" id="q6-error">This field is required.</span>
+
+    <button id="submitBtn" disabled>Submit</button>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            function checkField(id) {
+                const field = document.getElementById(id);
+                const error = document.getElementById(id + "-error");
+                if (!field.value.trim()) {
+                    error.style.display = "block";
+                    isValid = false;
+                } else {
+                    error.style.display = "none";
+                }
+            }
+
+            checkField("q1");
+            checkField("q2");
+            checkField("q3");
+            checkField("q5");
+            checkField("q6");
+
+            // Check multiple checkboxes
+            let q4Checked = document.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+            document.getElementById("q4-error").style.display = q4Checked ? "none" : "block";
+            if (!q4Checked) isValid = false;
+
+            document.getElementById("submitBtn").disabled = !isValid;
+        }
+
+        document.querySelectorAll("input, select, textarea").forEach(field => {
+            field.addEventListener("input", validateForm);
+        });
+
+        document.getElementById("submitBtn").addEventListener("click", () => {
+            const data = {
+                "Q1": document.getElementById("q1").value.trim(),
+                "Q2": document.getElementById("q2").value,
+                "Q3": document.getElementById("q3").value,
+                "Q4": [...document.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value),
+                "Q5": document.getElementById("q5").value,
+                "Q6": document.getElementById("q6").value.trim()
+            };
+
+            fetch("YOUR_API_URL_HERE", {
+                method: "POST",  // Change this to GET, PUT, DELETE as needed
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "YOUR_AUTHORIZATION_HERE"
+                },
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+              .then(result => alert("Form submitted successfully!"))
+              .catch(error => alert("Error submitting form."));
+        });
+    </script>
+
+</body>
+</html>
