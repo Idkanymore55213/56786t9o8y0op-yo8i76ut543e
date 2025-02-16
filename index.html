@@ -127,17 +127,24 @@ function validateForm() {
     checkField("q5");
     checkField("q6");
 
-    // Check multiple checkboxes
+    // Check if at least one checkbox is checked
     let q4Checked = document.querySelectorAll('input[type="checkbox"]:checked').length > 0;
     document.getElementById("q4-error").style.display = q4Checked ? "none" : "block";
     if (!q4Checked) isValid = false;
 
+    // Enable or disable submit button
     document.getElementById("submitBtn").disabled = !isValid;
+    console.log("Form valid:", isValid); // Debugging: Check if it's enabling
 }
 
+// Add event listeners for all inputs, selects, and checkboxes
 document.querySelectorAll("input, select, textarea").forEach(field => {
     field.addEventListener("input", validateForm);
+    field.addEventListener("change", validateForm);
 });
+
+// Run validation on page load
+validateForm();
 
 document.getElementById("submitBtn").addEventListener("click", () => {
     const data = {
@@ -154,14 +161,23 @@ document.getElementById("submitBtn").addEventListener("click", () => {
     // Disable the submit button until the request completes to prevent multiple submissions
     document.getElementById("submitBtn").disabled = true;
 
-fetch("https://your-app.onrender.com/submit", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-})
-.then(response => response.json())
-.then(result => alert("Form submitted successfully!"))
-.catch(error => alert("Error submitting form: " + error.message));
+    fetch("https://asdfghnjmk-lkjhgfdsadfg.onrender.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert("Form submitted successfully!");
+        document.getElementById("submitBtn").disabled = false;
+        document.querySelector("form")?.reset(); // Reset form if inside <form>
+        validateForm();  // Revalidate after resetting
+    })
+    .catch(error => {
+        alert("Error submitting form: " + error.message);
+        document.getElementById("submitBtn").disabled = false;
+    });
+});
     </script>
 
 </body>
