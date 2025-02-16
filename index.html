@@ -154,29 +154,14 @@ document.getElementById("submitBtn").addEventListener("click", () => {
     // Disable the submit button until the request completes to prevent multiple submissions
     document.getElementById("submitBtn").disabled = true;
 
-    fetch("https://cors-anywhere.herokuapp.com/https://api.botghost.com/webhook/1338030060300402688/e3gti17gvfjpej1s7vau", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "5ecb576597790e7a7e0c9934e819cacc1565e0bfef65479b45432c0548d318c2"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-        alert("Form submitted successfully! Make sure you have DMs enabled so the bot can DM you if accepted.");
-        // After successful submission, enable the button again
-        document.getElementById("submitBtn").disabled = false;
-        // Optionally clear the form after submission (optional, remove if not needed)
-        document.querySelector("form").reset();
-        validateForm();  // Revalidate the form in case you reset it
-    })
-    .catch(error => {
-        alert("Error submitting form: " + error.message);
-        // Enable the button again in case of error
-        document.getElementById("submitBtn").disabled = false;
-    });
-});
+fetch("https://your-app.onrender.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => alert("Form submitted successfully!"))
+.catch(error => alert("Error submitting form: " + error.message));
     </script>
 
 </body>
