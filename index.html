@@ -145,7 +145,7 @@ document.getElementById("submitBtn").addEventListener("click", () => {
             { "name": "Q1", "variable": "{Q1}", "value": document.getElementById("q1").value.trim() },
             { "name": "Q2", "variable": "{Q2}", "value": document.getElementById("q2").value },
             { "name": "Q3", "variable": "{Q3}", "value": document.getElementById("q3").value },
-            { "name": "Q4", "variable": "{Q4}", "value": [...document.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value) },
+            { "name": "Q4", "variable": "{Q4}", "value": [...document.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value).join(", ") },
             { "name": "Q5", "variable": "{Q5}", "value": document.getElementById("q5").value },
             { "name": "Q6", "variable": "{Q6}", "value": document.getElementById("q6").value.trim() }
         ]
