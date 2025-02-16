@@ -107,73 +107,62 @@
     <button id="submitBtn" disabled>Submit</button>
 
     <script>
-        function validateForm() {
-            let isValid = true;
+function validateForm() {
+    let isValid = true;
 
-            function checkField(id) {
-                const field = document.getElementById(id);
-                const error = document.getElementById(id + "-error");
-                if (!field.value.trim()) {
-                    error.style.display = "block";
-                    isValid = false;
-                } else {
-                    error.style.display = "none";
-                }
-            }
-
-            checkField("q1");
-            checkField("q2");
-            checkField("q3");
-            checkField("q5");
-            checkField("q6");
-
-            // Check multiple checkboxes
-            let q4Checked = document.querySelectorAll('input[type="checkbox"]:checked').length > 0;
-            document.getElementById("q4-error").style.display = q4Checked ? "none" : "block";
-            if (!q4Checked) isValid = false;
-
-            document.getElementById("submitBtn").disabled = !isValid;
+    function checkField(id) {
+        const field = document.getElementById(id);
+        const error = document.getElementById(id + "-error");
+        if (!field.value.trim()) {
+            error.style.display = "block";
+            isValid = false;
+        } else {
+            error.style.display = "none";
         }
+    }
 
-        document.querySelectorAll("input, select, textarea").forEach(field => {
-            field.addEventListener("input", validateForm);
-        });
+    checkField("q1");
+    checkField("q2");
+    checkField("q3");
+    checkField("q5");
+    checkField("q6");
 
-        document.getElementById("submitBtn").addEventListener("click", () => {
-            const data = {
-                "variables": [
-                    "name": "Q1", 
-                    "variable": "{Q1}", 
-                    "value": document.getElementById("q1").value.trim(),
-                    "name": "Q2", 
-                    "variable": "{Q2}", 
-                    "value": document.getElementById("q2").value,
-                    "name": "Q3", 
-                    "variable": "{Q3}", 
-                    "value": document.getElementById("q3").value,
-                    "name": "Q4", 
-                    "variable": "{Q4}", 
-                    "value": [...document.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value),
-                    "name": "Q5", 
-                    "variable": "{Q5}", 
-                    "value": document.getElementById("q5").value,
-                    "name": "Q6", 
-                    "variable": "{Q6}", 
-                    "value": document.getElementById("q6").value.trim()
-                ]
-            };
+    // Check multiple checkboxes
+    let q4Checked = document.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+    document.getElementById("q4-error").style.display = q4Checked ? "none" : "block";
+    if (!q4Checked) isValid = false;
 
-            fetch("https://api.botghost.com/webhook/1338030060300402688/e3gti17gvfjpej1s7vau", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "5ecb576597790e7a7e0c9934e819cacc1565e0bfef65479b45432c0548d318c2"
-                },
-                body: JSON.stringify(data)
-            }).then(response => response.json())
-              .then(result => alert("Form submitted successfully!, make sure you have dms enabled so the bot can dm you if accepted!"))
-              .catch(error => alert("Error submitting form. Returned code" + error.message));
-        });
+    document.getElementById("submitBtn").disabled = !isValid;
+}
+
+document.querySelectorAll("input, select, textarea").forEach(field => {
+    field.addEventListener("input", validateForm);
+});
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+    const data = {
+        "variables": [
+            { "name": "Q1", "variable": "{Q1}", "value": document.getElementById("q1").value.trim() },
+            { "name": "Q2", "variable": "{Q2}", "value": document.getElementById("q2").value },
+            { "name": "Q3", "variable": "{Q3}", "value": document.getElementById("q3").value },
+            { "name": "Q4", "variable": "{Q4}", "value": [...document.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value) },
+            { "name": "Q5", "variable": "{Q5}", "value": document.getElementById("q5").value },
+            { "name": "Q6", "variable": "{Q6}", "value": document.getElementById("q6").value.trim() }
+        ]
+    };
+
+    fetch("https://api.botghost.com/webhook/1338030060300402688/e3gti17gvfjpej1s7vau", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "5ecb576597790e7a7e0c9934e819cacc1565e0bfef65479b45432c0548d318c2"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => alert("Form submitted successfully! Make sure you have DMs enabled so the bot can DM you if accepted."))
+    .catch(error => alert("Error submitting form. Returned code: " + error.message));
+});
     </script>
 
 </body>
